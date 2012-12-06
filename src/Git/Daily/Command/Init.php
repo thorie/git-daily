@@ -75,6 +75,10 @@ class Git_Daily_Command_Init
             }
         }
 
+        // auto tagging
+        $autotag = Git_Daily_CommandUtil::yesNo('Auto tagging', Git_Daily_CommandUtil::YESNO_NO) ? 'true' : 'false';
+        self::cmd(Git_Daily::$git, array('config', 'gitdaily.autotag', $autotag));
+
         // initialized
         self::cmd(Git_Daily::$git, array('config', 'gitdaily.init', 'true'));
 

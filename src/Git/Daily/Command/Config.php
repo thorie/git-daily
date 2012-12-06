@@ -17,6 +17,7 @@ class Git_Daily_Command_Config
         'develop',
         'master',
         'logurl',
+        'autotag',
     );
 
     public function runCommand()
@@ -56,6 +57,9 @@ class Git_Daily_Command_Config
             $this->_setConfigMaster($value);
             break;
         case 'logurl':
+            $this->_setConfigLogurl($value);
+            break;
+        case 'autotag':
             $this->_setConfigLogurl($value);
             break;
         default:

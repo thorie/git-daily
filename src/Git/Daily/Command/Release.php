@@ -368,6 +368,20 @@ class Git_Daily_Command_Release
                 }
             }
 
+            // auto tagging
+            $is_autotag = self::cmd(Git_Daily::$git, array('config', '--bool', 'gitdaily.autotag'));
+            if ($is_autotag) {
+                $now     = time();
+                $version = 'v.' .  date("YmdHis", $now); 
+                $msg     = 'release closed at ' . date(DATE_RFC822, $now);
+                list($res, $retval) = Git_Daily_CommandUtil::cmd(Git_Daily::$git, array('tag', '-a', $version, '-m', $msg));
+                self::outLn($res);
+                if ($retval != 0) {
+                    self::warn('auto tagging failed');
+                    throw new Git_Daily_Exception('abort');
+                }
+            }
+
             // push the merged branch to remote
             self::info("push $merge_branch to $remote");
             self::cmd(Git_Daily::$git, array('checkout', $merge_branch));
@@ -380,7 +394,7 @@ class Git_Daily_Command_Release
 
         }
 
-        // delere release branch
+        // delete release branch
         self::info("delete branch: $release_branch");
         list($res, $retval) = Git_Daily_CommandUtil::cmd(Git_Daily::$git, array('branch', '-d', $release_branch));
         self::outLn($res);
